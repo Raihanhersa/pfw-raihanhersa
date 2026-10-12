@@ -11,30 +11,31 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', [HomeController::class, 'index']);
+
 Route::get('/pcr', function () {
     return 'Selamat Datang di Website Kampus PCR!';
 });
 
-Route::get('/nama/{raihanhersa}', function ($param1) {
-    return 'Nama saya: '.$param1;
+Route::get('/nama/{raihannofendri}', function ($param1) {
+    return 'Nama saya: ' . $param1;
 });
 
-Route::get('/nim/{param1?}', function ($param1 = '2557301069') {
-    return 'NIM saya: '.$param1;
+Route::get('/nim/{param1?}', function ($param1 = '2557301109') {
+    return 'NIM saya: ' . $param1;
 });
 
 Route::get('/mahasiswa', function () {
     return 'Halo Mahasiswa';
 });
 
-Route::post('question/store', [QuestionController::class, 'store'])
-    ->name('question.store');
-
 Route::get('/mahasiswa/{param1}', [MahasiswaController::class, 'show']);
 
-Route::get('/home', [HomeController::class, 'index']);
+Route::post('/question/store', [QuestionController::class, 'store'])
+    ->name('question.store');
 
-Route::get('/question', [QuestionController::class, 'index'])->name('question.index');
+Route::get('/question', [QuestionController::class, 'index'])
+    ->name('question.index');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
