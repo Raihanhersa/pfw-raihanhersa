@@ -5,7 +5,7 @@
         <div class="py-4">
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
                 <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                    <li class="breadcrumb-item">
+                    <li class="nav-item {{ request()->routeIs('pelanggan.*') ? 'active' : '' }}">
                         <a href="#">
                             <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -15,8 +15,9 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#">Pelanggan</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit Pelanggan</li>
+                    <li class="nav-item {{ request()->routeIs('pelanggan.*') ? 'active' : '' }}">
+                    <a href="#">Pelanggan</a></li>
+                     <li class="nav-item {{ request()->routeIs('pelanggan.*') ? 'active' : '' }}">
                 </ol>
             </nav>
             <div class="d-flex justify-content-between w-100 flex-wrap">

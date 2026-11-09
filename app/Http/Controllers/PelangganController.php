@@ -44,8 +44,8 @@ class PelangganController extends Controller
         $data['phone'] = $request->phone;
 
         Pelanggan::create($data);
+        return redirect()->route('pelanggan.index');
 
-        
     }
 
     /**
