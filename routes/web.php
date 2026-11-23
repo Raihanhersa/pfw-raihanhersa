@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MahasiswaController;
@@ -56,3 +57,11 @@ Route::resource('/pelanggan', PelangganController::class);
 
 
 Route::resource('/user', UserController::class);
+
+Route::get('/login', [AuthController::class, 'index'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->middleware('auth')
+    ->name('auth.logout');
+
+Route::get('auth/logout', [AuthController::class,'logout'])->name('logout');

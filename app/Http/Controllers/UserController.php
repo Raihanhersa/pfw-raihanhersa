@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
@@ -15,6 +16,12 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect()
+            ->route('auth.login')
+            ->withErors('Silahkan login terlebih dahulu');
+
+        }
         $data['dataUser'] = User::all();
 
 
