@@ -1,12 +1,15 @@
 <?php
-
-
 namespace App\Http\Controllers;
+
+
 
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+
 
 
 class UserController extends Controller
@@ -16,17 +19,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()
-            ->route('auth.login')
-            ->withErors('Silahkan login terlebih dahulu');
-
+                ->route('auth.login')
+                ->withErrors('Silahkan Login terlebih dahulu');
         }
+
+
+
+
         $data['dataUser'] = User::all();
-
-
         return view('admin.user.index', $data);
     }
+
+
 
 
     /**
@@ -38,23 +44,40 @@ class UserController extends Controller
     }
 
 
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email',
+        $request->validate([
+            'name'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed',
+            'role'     => 'required|in:Super Admin,Pelanggan,Mitra',
         ]);
 
 
-        User::create($validated);
+
+
+        $data['name']     = $request->name;
+        $data['email']    = $request->email;
+        $data['password'] = Hash::make($request->password);
+        $data['role']     = $request->role; // <-- Tambahkan ini
+
+
+
+
+        User::create($data);
+
+
 
 
         return redirect()->route('user.index')->with('success', 'Penambahan Data Berhasil!');
     }
+
+
 
 
     /**
@@ -66,16 +89,18 @@ class UserController extends Controller
     }
 
 
+
+
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $data['dataUser'] = User::findOrFail($id);
-
-
         return view('admin.user.edit', $data);
     }
+
+
 
 
     /**
@@ -83,30 +108,40 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
-
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+        $request->validate([
+            'name'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|min:8|confirmed',
+            'role'     => 'required|in:Super Admin,Pelanggan,Mitra',
         ]);
 
 
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
 
 
-        if (! empty($validated['password'])) {
-            $user->password = $validated['password'];
+        $user = User::findOrFail($id);
+
+
+
+
+        $user->name  = $request->name;
+        $user->email = $request->email;
+        $user->role  = $request->role; // <-- Tambahkan ini
+
+
+
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
         }
 
 
+
+
         $user->save();
-
-
         return redirect()->route('user.index')->with('success', 'Perubahan Data Berhasil!');
     }
+
+
 
 
     /**
@@ -117,11 +152,9 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
 
+
+
         $user->delete();
-
-
-        return redirect()
-            ->route('user.index')
-            ->with('success', 'Data user berhasil dihapus.');
+        return redirect()->route('user.index')->with('success', 'Data berhasil dihapus');
     }
 }

@@ -30,6 +30,7 @@
                 <th class="border-gray-200">NAME</th>
                 <th class="border-gray-200">EMAIL</th>
                 <th class="border-gray-200">PASSWORD</th>
+                <th class="border-gray-200">ROLE</th>
                 <th class="border-gray-200 text-center">ACTION</th>
             </tr>
         </thead>
